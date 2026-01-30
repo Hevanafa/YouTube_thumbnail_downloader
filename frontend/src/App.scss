@@ -116,7 +116,6 @@ input {
 
     &:hover {
       z-index: 1;
-      // box-shadow: 0 0 10px black;
       filter: drop-shadow(0 0 10px black);
     }
 
@@ -136,45 +135,28 @@ input {
         }
 
         & > .metadata {
-          transform: scale(1.2);
           opacity: 1.0;
-        }
-      } 
-
-      & > .metadata {
-        pointer-events: none;
-        
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: rgba($color: black, $alpha: 0.7);
-        color: white;
-        
-        transition: 0.25s opacity;
-        opacity: 0.0;
-
-        text-decoration: none;
-
-        & > div {
-          position: absolute;
-          inset: 0;
-          margin: auto;
-          width: fit-content;
-          height: fit-content;
-          
-          text-align: center;
         }
       }
 
       & > .metadata {
-        transition: unset;
-        opacity: 0.0;
-
         position: absolute;
         width: 100%;
-        background: rgba($color: black, $alpha: 0.05);
+        height: fit-content;
+        top: 100%;
+        left: 0;
+
+        transform: scale(1.2);
+        transform-origin: top;
+        opacity: 0.0;
+
+        pointer-events: none;
+
+        transition: 0.25s opacity;
+        text-decoration: none;
+
+        background: rgba($color: black, $alpha: 0.7);
+        color: white;
 
         & > div {
           pointer-events: none;
@@ -182,10 +164,11 @@ input {
           position: relative;
           inset: unset;
           margin: unset;
+
           width: 100%;
-
-          background: rgba($color: black, $alpha: 0.5);
-
+          height: fit-content;
+          
+          text-align: center;
           top: 100%;
         }
       }
