@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import * as cheerio from "cheerio";
 import { existsSync, mkdir } from "node:fs";
+import { readdir } from "node:fs/promises";
 
 const app = express();
 const Port = 8001;
@@ -15,6 +16,13 @@ app.get("/", (req, res) => {
 
 app.listen(Port, () => {
   console.log("Server running on localhost:" + Port);
+});
+
+app.use("/thumbs", express.static("thumbs"));
+
+app.get("/api/thumbnails", async (req, res) => {
+  const files = await readdir("./thumbs");
+  res.json({ files })
 });
 
 async function downloadAndSave(thumbHref: string, outFilename: string): Promise<[boolean, string]> {

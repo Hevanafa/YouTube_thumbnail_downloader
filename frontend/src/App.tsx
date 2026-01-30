@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { isAxiosError } from "axios";
 import "./App.scss";
+
+function getRestUrl(path: string) {
+  return "http://localhost:8001/" + path
+}
 
 function App() {
   const [urlInput, setUrlInput] = useState("");
@@ -11,7 +15,16 @@ function App() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [thumbnails, setThumbnails] = useState([]);
+  const [thumbnails, setThumbnails] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    (async function() {
+      const response = await axios.get(getRestUrl("api/thumbnails"));
+      const files = response.data.files;
+
+      setThumbnails(files);
+    })();
+  }, []);
 
   return (
     <>
@@ -34,7 +47,7 @@ function App() {
               };
 
               try {
-                const response = await axios.post("http://localhost:8001/api/download", postBody);
+                const response = await axios.post(getRestUrl("api/download"), postBody);
                 console.log(response.data);
 
                 setShowLastSuccess(true);
@@ -57,16 +70,29 @@ function App() {
       </div>
 
       <div>
-        { isDownloading
-          ? "Downloading..."
-          : null }
+        { isDownloading ? "Downloading..." : null }
+
+        {
+          showLastSuccess
+          ? (lastSuccess ? <div>{ successMessage }</div> : <div>Unsuccessful: { errorMessage }</div>)
+          : null
+        }
       </div>
 
-      {
-        showLastSuccess
-        ? (lastSuccess ? <div>{ successMessage }</div> : <div>Unsuccessful: { errorMessage }</div>)
-        : null
-      }
+      <div className="thumbnail-gallery">
+        { thumbnails.map(filename => 
+          <div className="gallery-item">
+            <img src={getRestUrl("thumbs/" + filename)} />
+
+            <div className="metadata">
+              <div>
+              { filename }
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
     </>
   )
 }
