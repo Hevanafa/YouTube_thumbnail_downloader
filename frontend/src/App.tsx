@@ -73,7 +73,14 @@ function App() {
                 const response = await axios.post(getRestUrl("api/download"), postBody);
                 console.log(response.data);
 
-                setThumbnails([...thumbnails, response.data.outFilename])
+                const { title, filename, duplicate } = response.data;
+
+                if (!duplicate)
+                  setThumbnails([...thumbnails, {
+                    id: thumbnails.length + 1,
+                    title,
+                    filename
+                  }]);
 
                 setShowLastSuccess(true);
                 setLastSuccess(response.data.success);
