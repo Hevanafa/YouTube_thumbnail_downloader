@@ -114,13 +114,19 @@ input {
     overflow: visible;
 
     & > .metadata {
+      transition: unset;
       opacity: 1.0;
 
       position: absolute;
       width: 100%;
       background: rgba($color: black, $alpha: 0.05);
 
+      &:hover > div {
+        opacity: 1.0;
+      }
+
       & > div {
+        opacity: 0.0;
         pointer-events: none;
 
         position: relative;
