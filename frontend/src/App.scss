@@ -34,9 +34,10 @@ input {
 }
 
 .input-area {
-  margin: 1rem 0;
+  margin: 0.75rem 0;
   
   & > input {
+    font-size: 1.5rem;
     background: #444;
     border: none;
     height: 3rem;
