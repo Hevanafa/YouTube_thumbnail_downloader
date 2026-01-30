@@ -116,6 +116,19 @@ function App() {
           const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
           const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
 
+          return <div key={"gi" + trimmed} className="gallery-item experimental-hover">
+            <a className="hover-trigger" target="_blank" href={youtubeUrl}>
+              <img src={getRestUrl("thumbs/" + item.filename)} />
+
+              <div className="metadata">
+                <div>
+                { item.title }
+                </div>
+              </div>
+            </a>
+          </div>
+
+          /**
           return <div key={"gi" + trimmed} className="gallery-item">
             <img src={getRestUrl("thumbs/" + item.filename)} />
 
@@ -125,6 +138,7 @@ function App() {
               </div>
             </a>
           </div>
+          */
         })}
       </div>
     </div>
