@@ -17,6 +17,7 @@ function App() {
       <div>
         <input
           type="text"
+          disabled={isDownloading}
           value={urlInput}
 
           onChange={e => { setUrlInput(e.target.value) }}
@@ -30,7 +31,7 @@ function App() {
                 url: urlInput
               };
 
-              const response = await axios.post("http://localhost:8001", postBody);
+              const response = await axios.post("http://localhost:8001/api/download", postBody);
               console.log(response.data);
 
               setIsDownloading(false);
@@ -39,7 +40,9 @@ function App() {
       </div>
 
       <div>
-        { urlInput }
+        { isDownloading
+          ? "Downloading..."
+          : null }
       </div>
     </>
   )
