@@ -8,6 +8,7 @@ Supported URLs:
 
 - `https://www.youtube.com/watch?v=videoID`
 - `https://youtu.be/videoID`
+- `https://www.youtube.com/shorts/videoID`
 
 ## Requirements
 
