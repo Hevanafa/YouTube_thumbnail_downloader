@@ -50,6 +50,8 @@ function App() {
                 const response = await axios.post(getRestUrl("api/download"), postBody);
                 console.log(response.data);
 
+                setThumbnails([...thumbnails, response.data.outFilename])
+
                 setShowLastSuccess(true);
                 setLastSuccess(response.data.success);
                 setSuccessMessage(response.data.message);
@@ -84,7 +86,7 @@ function App() {
           const trimmed = filename.replace(/\.(jpg|png)$/, "");
           const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
 
-          return <div className="gallery-item">
+          return <div key={"gi" + trimmed} className="gallery-item">
             <img src={getRestUrl("thumbs/" + filename)} />
 
             <a className="metadata" target="_blank" href={youtubeUrl}>

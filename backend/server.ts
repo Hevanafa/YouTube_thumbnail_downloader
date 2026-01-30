@@ -84,10 +84,17 @@ app.post("/api/download", async (req, res) => {
 
   const match = thumbHref.match(/\.(jpg|png)$/);
   const ext = match?.[1] ?? "";
+  const outFilename = `${youtubeHash}.${ext}`;
 
-  const downloadResponse = await downloadAndSave(thumbHref, `${youtubeHash}.${ext}`);
+  const downloadResponse = await downloadAndSave(thumbHref, outFilename);
   if (downloadResponse[0] == true)
-    res.json({ success: true, url, title, message: "Saved as " + downloadResponse[1] })
+    res.json({
+      success: true,
+      url,
+      title,
+      outFilename,
+      message: "Saved as " + downloadResponse[1]
+    })
   else {
     res.status(409);
     res.json({ success: false, message: downloadResponse[1] })
