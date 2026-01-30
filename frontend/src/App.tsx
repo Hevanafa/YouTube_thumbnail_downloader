@@ -1,10 +1,14 @@
 import { useState } from "react";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import "./App.scss";
 
 function App() {
   const [urlInput, setUrlInput] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
+
+  const [showLastSuccess, setShowLastSuccess] = useState(false);
+  const [lastSuccess, setLastSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [thumbnails, setThumbnails] = useState([]);
 
@@ -31,10 +35,24 @@ function App() {
                 url: urlInput
               };
 
-              const response = await axios.post("http://localhost:8001/api/download", postBody);
-              console.log(response.data);
+              try {
+                const response = await axios.post("http://localhost:8001/api/download", postBody);
+                console.log(response.data);
 
-              setIsDownloading(false);
+                setShowLastSuccess(true);
+                setLastSuccess(response.data.success);
+
+                setIsDownloading(false);
+              } catch (error) {
+                if (isAxiosError(error) && error.response != null)
+                  setErrorMessage(error.response.data.message);
+
+                setShowLastSuccess(true);
+                setLastSuccess(false);
+
+                setIsDownloading(false);
+                return
+              }
             }
             }} />
       </div>
@@ -44,6 +62,12 @@ function App() {
           ? "Downloading..."
           : null }
       </div>
+
+      {
+        showLastSuccess
+        ? (lastSuccess ? <div>Success!</div> : <div>Unsuccessful: { errorMessage }</div>)
+        : null
+      }
     </>
   )
 }
