@@ -3,6 +3,7 @@ import cors from "cors";
 import * as cheerio from "cheerio";
 import { existsSync, mkdir } from "node:fs";
 import { readdir } from "node:fs/promises";
+import db from "./db";
 
 const app = express();
 const Port = 8001;
@@ -93,7 +94,9 @@ app.post("/api/download", async (req, res) => {
   const outFilename = `${videoID}.${ext}`;
 
   const downloadResponse = await downloadAndSave(thumbHref, outFilename);
-  if (downloadResponse[0] == true)
+  if (downloadResponse[0] == true) {
+    db.run("INSERT INTO thumbnails (title, filename) VALUES (?, ?)", [title, outFilename]);
+
     res.json({
       success: true,
       url,
@@ -101,7 +104,7 @@ app.post("/api/download", async (req, res) => {
       outFilename,
       message: "Saved as " + downloadResponse[1]
     })
-  else {
+  } else {
     res.status(409);
     res.json({ success: false, message: downloadResponse[1] })
   }
