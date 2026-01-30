@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import * as cheerio from "cheerio";
 import { existsSync, mkdir } from "node:fs";
-import { readdir } from "node:fs/promises";
-import db from "./db";
+// import { readdir } from "node:fs/promises";
+import * as db from "./db";
 
 const app = express();
 const Port = 8001;
@@ -25,7 +25,7 @@ app.get("/api/thumbnails", async (req, res) => {
   // const files = await readdir("./thumbs");
   // res.json({ files })
 
-  const thumbnails = db.query("SELECT * FROM thumbnails").all();
+  const thumbnails = db.instance.query("SELECT * FROM thumbnails").all();
   res.json({ thumbnails })
 });
 
@@ -98,7 +98,9 @@ app.post("/api/download", async (req, res) => {
 
   const downloadResponse = await downloadAndSave(thumbHref, outFilename);
   if (downloadResponse[0] == true) {
-    db.run("INSERT INTO thumbnails (title, filename) VALUES (?, ?)", [title, outFilename]);
+    db.instance.run(
+      "INSERT INTO thumbnails (title, filename) VALUES (?, ?)",
+      [title, outFilename]);
 
     res.json({
       success: true,
@@ -112,3 +114,5 @@ app.post("/api/download", async (req, res) => {
     res.json({ success: false, message: downloadResponse[1] })
   }
 });
+
+db.initDatabase();
