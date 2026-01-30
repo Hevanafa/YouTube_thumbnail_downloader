@@ -27,8 +27,12 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div>
+    <div className="wrapper">
+      <h1>YouTube Thumbnail Downloader</h1>
+
+      <div className="subtitle">By Hevanafa (Jan 2026)</div>
+
+      <div className="input-area">
         <input
           type="text"
           disabled={isDownloading}
@@ -68,10 +72,10 @@ function App() {
                 return
               }
             }
-            }} />
+          }} />
       </div>
 
-      <div>
+      <div className="status-message">
         { isDownloading ? "Downloading..." : null }
 
         {
@@ -97,8 +101,7 @@ function App() {
           </div>
         })}
       </div>
-
-    </>
+    </div>
   )
 }
 
