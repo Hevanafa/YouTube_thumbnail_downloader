@@ -39,27 +39,31 @@ app.post("/api/download", async (req, res) => {
     return
   }
 
-  // Fetch the thumbnail
+  // Fetch the page
   const response = await fetch(url);
   const html = await response.text();
   const cheer = cheerio.load(html);
 
+  // Obtain the title
   const title = cheer("title").text();
   console.log("Title:", title);
 
-  const href = cheer("link[itemprop=\"thumbnailUrl\"]").attr("href")!;
-  console.log("Thumbnail URL:", href);
-
-  const youtubeHash = new URLSearchParams(url).get("v") ?? "";
-  let ext = "";
-  href.match(/\.(jpg|png)$/, (_, g1) => ext = g1);
-  const outFilename = `thumbs/${youtubeHash}.${ext}`;
-  
+  // Download the thumbnail
   if (!existsSync("./thumbs")) mkdir("thumbs", () => {});
 
+  const thumbHref = cheer("link[itemprop=\"thumbnailUrl\"]").attr("href")!;
+  console.log("Thumbnail URL:", thumbHref);
 
+  const youtubeHash = new URL(url).searchParams.get("v") ?? "";
+  const match = thumbHref.match(/\.(jpg|png)$/);
+  const ext = match?.[1] ?? "";
 
+  const outFilename = `${youtubeHash}.${ext}`;
+  const outFilepath = "thumbs/" + outFilename;
+  
+  const thumbResponse = await fetch(thumbHref);
+  const arrayBuffer = await thumbResponse.arrayBuffer();
+  await Bun.write(outFilepath, arrayBuffer);
 
-
-  res.json({ success: true, url, title })
+  res.json({ success: true, url, title, message: "Saved as " + outFilepath })
 });
