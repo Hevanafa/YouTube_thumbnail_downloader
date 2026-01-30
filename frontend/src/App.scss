@@ -52,11 +52,16 @@ input {
 
 .thumbnail-gallery {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 
   & > div {
     position: relative;
-    width: 25%;
+    // width: 25%;
+
+    // flex-basis: 25%;  // This doesn't take account of the parent's gap property
+    flex-basis: calc(25% - (0.75rem));
+    flex-grow: 0;
 
     & > img {
       width: 100%;
