@@ -8,13 +8,10 @@ function App() {
 
   const [showLastSuccess, setShowLastSuccess] = useState(false);
   const [lastSuccess, setLastSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const [thumbnails, setThumbnails] = useState([]);
-
-  // function keydownHandler(e: KeyboardEventHandler<HTMLInputElement>) {
-    
-  // }
 
   return (
     <>
@@ -29,6 +26,7 @@ function App() {
             if (e.key == "Enter") {
               if (isDownloading) return;
 
+              setShowLastSuccess(false);
               setIsDownloading(true);
 
               const postBody = {
@@ -41,6 +39,7 @@ function App() {
 
                 setShowLastSuccess(true);
                 setLastSuccess(response.data.success);
+                setSuccessMessage(response.data.message);
 
                 setIsDownloading(false);
               } catch (error) {
@@ -65,7 +64,7 @@ function App() {
 
       {
         showLastSuccess
-        ? (lastSuccess ? <div>Success!</div> : <div>Unsuccessful: { errorMessage }</div>)
+        ? (lastSuccess ? <div>{ successMessage }</div> : <div>Unsuccessful: { errorMessage }</div>)
         : null
       }
     </>
