@@ -7,7 +7,7 @@ function getRestUrl(path: string) {
 }
 
 type TThumbnail = {
-  id: number,
+  thumbnailId: number,
   title: string,
   filename: string
 };
@@ -73,11 +73,11 @@ function App() {
                 const response = await axios.post(getRestUrl("api/download"), postBody);
                 console.log(response.data);
 
-                const { title, filename, duplicate } = response.data;
+                const { thumbnailId, title, filename, duplicate } = response.data;
 
                 if (!duplicate)
                   setThumbnails([...thumbnails, {
-                    id: thumbnails.length + 1,
+                    thumbnailId,
                     title,
                     filename
                   }]);

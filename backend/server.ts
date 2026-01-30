@@ -25,7 +25,9 @@ app.get("/api/thumbnails", async (req, res) => {
   // const files = await readdir("./thumbs");
   // res.json({ files })
 
-  const thumbnails = db.instance.query("SELECT * FROM thumbnails").all();
+  const thumbnails = db.instance.query(
+    "SELECT id as thumbnailId, title, filename FROM thumbnails"
+  ).all();
   res.json({ thumbnails })
 });
 
@@ -116,7 +118,7 @@ app.post("/api/download", async (req, res) => {
         message: "File already exists in the database. Thumbnail has been downloaded again",
 
         duplicate: true,
-        id: existing.id,
+        thumbnailId: existing.id,
         title,
         filename: outFilename
       })
@@ -131,7 +133,7 @@ app.post("/api/download", async (req, res) => {
         message: "Saved as " + downloadResponse[1],
 
         duplicate: false,
-        id: result.lastInsertRowid,
+        thumbnailId: result.lastInsertRowid,
         title,
         filename: outFilename
       })
