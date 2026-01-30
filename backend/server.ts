@@ -16,11 +16,21 @@ app.listen(Port, () => {
 });
 
 app.post("/api/download", async (req, res) => {
-  const { url } = req.body;
+  const { url } = <{ url: string }> req.body;
 
   console.log("Received URL:", url);
 
-  // TODO: Download the thumbnail
+  try {
+    new URL(url);
+  } catch (error) {
+    throw error
+  }
+
+  if (!url.includes("youtube.com"))
+    throw new Error("Invalid YouTube URL!");
+
+  const response = await fetch(url);
+
 
   res.json({ success: true, url })
 });
