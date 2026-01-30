@@ -93,7 +93,7 @@ app.post("/api/download", async (req, res) => {
 
   const thumbHref = cheer("link[itemprop=\"thumbnailUrl\"]").attr("href")!;
   const thumbPathname = new URL(thumbHref).pathname;
-  
+
   console.log("Thumbnail URL:", thumbHref);
 
   const match = thumbPathname.match(/\.(jpg|png)$/);
@@ -103,31 +103,37 @@ app.post("/api/download", async (req, res) => {
   const downloadResponse = await downloadAndSave(thumbHref, outFilename);
 
   if (downloadResponse[0] == true) {
-    const row = db.instance.query(
+    const existing = <{id: number}> db.instance.query(
       "SELECT id FROM thumbnails WHERE filename = ?"
     ).get(outFilename);
 
-    if (row != null)
+    console.log("existing", existing);
+
+    if (existing != null)
       res.json({
         success: true,
         url,
-        title,
-        filename: outFilename,
         message: "File already exists in the database. Thumbnail has been downloaded again",
-        duplicate: true
+
+        duplicate: true,
+        id: existing.id,
+        title,
+        filename: outFilename
       })
     else {
-      db.instance.run(
+      const result = db.instance.run(
         "INSERT INTO thumbnails (title, filename) VALUES (?, ?)",
         [title, outFilename]);
 
       res.json({
         success: true,
         url,
-        title,
-        filename: outFilename,
         message: "Saved as " + downloadResponse[1],
-        duplicate: false
+
+        duplicate: false,
+        id: result.lastInsertRowid,
+        title,
+        filename: outFilename
       })
     }
   } else {
