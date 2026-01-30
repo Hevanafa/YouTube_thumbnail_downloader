@@ -56,7 +56,7 @@ app.post("/api/download", async (req, res) => {
     return
   }
 
-  if (!url.includes("youtube.com")) {
+  if (!url.includes("youtube.com") && !url.includes("youtu.be")) {
     res.status(400);
     res.json({ success: false, message: "Invalid YouTube URL!" });
     return
@@ -71,11 +71,17 @@ app.post("/api/download", async (req, res) => {
   // Download the thumbnail
   if (!existsSync("./thumbs")) mkdir("thumbs", () => {});
 
-  const youtubeHash = new URL(url).searchParams.get("v") ?? "";
+  const urlObj = new URL(url);
+  let videoID = "";
 
-  if (youtubeHash == "") {
+  if (urlObj.hostname == "youtu.be")
+    videoID = urlObj.pathname.substring(1)
+  else
+    videoID = new URL(url).searchParams.get("v") ?? "";
+
+  if (videoID == "") {
     res.status(400);
-    res.json({ success: false, message: "Missing video hash!" });
+    res.json({ success: false, message: "Missing video ID!" });
     return
   }
 
@@ -84,7 +90,7 @@ app.post("/api/download", async (req, res) => {
 
   const match = thumbHref.match(/\.(jpg|png)$/);
   const ext = match?.[1] ?? "";
-  const outFilename = `${youtubeHash}.${ext}`;
+  const outFilename = `${videoID}.${ext}`;
 
   const downloadResponse = await downloadAndSave(thumbHref, outFilename);
   if (downloadResponse[0] == true)
