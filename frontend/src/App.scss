@@ -1,5 +1,5 @@
 :root {
-  background: #111;
+  background: #213;
   color: white;
 
   font-size: 12pt;
@@ -22,7 +22,9 @@ input {
 }
 
 .wrapper {
+  background: #111;
   max-width: 800px;
+  min-height: 100vh;
 
   position: fixed;
   top: 0;
