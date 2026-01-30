@@ -96,6 +96,8 @@ input {
       transition: 0.25s opacity;
       opacity: 0.0;
 
+      text-decoration: none;
+
       & > div {
         position: absolute;
         inset: 0;
@@ -104,6 +106,32 @@ input {
         height: fit-content;
         
         text-align: center;
+      }
+    }
+  }
+
+  & > .gallery-item.experimental-hover {
+    overflow: visible;
+
+    & > .metadata {
+      opacity: 1.0;
+
+      position: absolute;
+      width: 100%;
+      background: rgba($color: black, $alpha: 0.05);
+
+      & > div {
+        pointer-events: none;
+
+        position: relative;
+        inset: unset;
+        margin: unset;
+        width: 100%;
+
+        background: rgba($color: black, $alpha: 0.5);
+
+        top: 100%;
+        z-index: 1;
       }
     }
   }

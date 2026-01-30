@@ -116,7 +116,7 @@ function App() {
           const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
           const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
 
-          return <div key={"gi" + trimmed} className="gallery-item">
+          return <div key={"gi" + trimmed} className="gallery-item experimental-hover">
             <img src={getRestUrl("thumbs/" + item.filename)} />
 
             <a className="metadata" target="_blank" href={youtubeUrl}>
