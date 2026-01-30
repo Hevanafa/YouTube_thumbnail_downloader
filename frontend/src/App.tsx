@@ -11,6 +11,9 @@ function App() {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const [showLastSuccess, setShowLastSuccess] = useState(false);
+  /**
+   * Show successMessage if lastSuccess == true, otherwise errorMessage
+   */
   const [lastSuccess, setLastSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,10 +22,18 @@ function App() {
 
   useEffect(() => {
     (async function() {
-      const response = await axios.get(getRestUrl("api/thumbnails"));
-      const files = response.data.files;
+      try {
+        const response = await axios.get(getRestUrl("api/thumbnails"));
+        const files = response.data.files;
 
-      setThumbnails(files);
+        setThumbnails(files);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          setShowLastSuccess(true);
+          setLastSuccess(false);
+          setErrorMessage(error.message)
+        }
+      }
     })();
   }, []);
 
