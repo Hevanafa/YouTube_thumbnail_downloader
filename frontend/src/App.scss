@@ -58,13 +58,23 @@ input {
   flex-wrap: wrap;
   gap: 1rem;
 
-  & > div {
+  & > .gallery-item {
     position: relative;
+    overflow: hidden;
+    border-radius: 8px;
     // width: 25%;
 
     // flex-basis: 25%;  // This doesn't take account of the parent's gap property
     flex-basis: calc(25% - (0.75rem));
     flex-grow: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: fit-content;
+    // border: 1px solid white;
+    box-sizing: border-box;
 
     & > img {
       width: 100%;
