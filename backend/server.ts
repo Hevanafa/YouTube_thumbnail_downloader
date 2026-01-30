@@ -24,11 +24,18 @@ app.post("/api/download", async (req, res) => {
   try {
     new URL(url);
   } catch (error) {
-    throw error
+    if (error instanceof Error) {
+      res.status(400);
+      res.json({ success: false, message: error.message });
+    }
+    return
   }
 
-  if (!url.includes("youtube.com"))
-    throw new Error("Invalid YouTube URL!");
+  if (!url.includes("youtube.com")) {
+    res.status(400);
+    res.json({ success: false, message: "Invalid YouTube URL!" });
+    return
+  }
 
   const response = await fetch(url);
   const html = await response.text();
