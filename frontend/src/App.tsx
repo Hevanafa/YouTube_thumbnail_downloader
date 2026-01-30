@@ -80,17 +80,20 @@ function App() {
       </div>
 
       <div className="thumbnail-gallery">
-        { thumbnails.map(filename => 
-          <div className="gallery-item">
+        { thumbnails.map(filename => {
+          const trimmed = filename.replace(/\.(jpg|png)$/, "");
+          const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
+
+          return <div className="gallery-item">
             <img src={getRestUrl("thumbs/" + filename)} />
 
-            <div className="metadata">
+            <a className="metadata" target="_blank" href={youtubeUrl}>
               <div>
               { filename }
               </div>
-            </div>
+            </a>
           </div>
-        )}
+        })}
       </div>
 
     </>
