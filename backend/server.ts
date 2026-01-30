@@ -97,18 +97,35 @@ app.post("/api/download", async (req, res) => {
   const outFilename = `${videoID}.${ext}`;
 
   const downloadResponse = await downloadAndSave(thumbHref, outFilename);
-  if (downloadResponse[0] == true) {
-    db.instance.run(
-      "INSERT INTO thumbnails (title, filename) VALUES (?, ?)",
-      [title, outFilename]);
 
-    res.json({
-      success: true,
-      url,
-      title,
-      outFilename,
-      message: "Saved as " + downloadResponse[1]
-    })
+  if (downloadResponse[0] == true) {
+    const row = db.instance.query(
+      "SELECT id FROM thumbnails WHERE filename = ?"
+    ).get(outFilename);
+
+    if (row != null)
+      res.json({
+        success: true,
+        url,
+        title,
+        filename: outFilename,
+        message: "File already exists in the database. Thumbnail has been downloaded again",
+        duplicate: true
+      })
+    else {
+      db.instance.run(
+        "INSERT INTO thumbnails (title, filename) VALUES (?, ?)",
+        [title, outFilename]);
+
+      res.json({
+        success: true,
+        url,
+        title,
+        filename: outFilename,
+        message: "Saved as " + downloadResponse[1],
+        duplicate: false
+      })
+    }
   } else {
     res.status(409);
     res.json({ success: false, message: downloadResponse[1] })
