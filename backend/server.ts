@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import * as cheerio from "cheerio";
+import { existsSync, mkdir } from "node:fs";
+import { URLSearchParams } from "node:url";
 
 const app = express();
 const Port = 8001;
@@ -37,6 +39,7 @@ app.post("/api/download", async (req, res) => {
     return
   }
 
+  // Fetch the thumbnail
   const response = await fetch(url);
   const html = await response.text();
   const cheer = cheerio.load(html);
@@ -44,5 +47,19 @@ app.post("/api/download", async (req, res) => {
   const title = cheer("title").text();
   console.log("Title:", title);
 
-  res.json({ success: true, url })
+  const href = cheer("link[itemprop=\"thumbnailUrl\"]").attr("href")!;
+  console.log("Thumbnail URL:", href);
+
+  const youtubeHash = new URLSearchParams(url).get("v") ?? "";
+  let ext = "";
+  href.match(/\.(jpg|png)$/, (_, g1) => ext = g1);
+  const outFilename = `thumbs/${youtubeHash}.${ext}`;
+  
+  if (!existsSync("./thumbs")) mkdir("thumbs", () => {});
+
+
+
+
+
+  res.json({ success: true, url, title })
 });
