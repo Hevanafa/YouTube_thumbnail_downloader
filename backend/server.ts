@@ -80,6 +80,8 @@ app.post("/api/download", async (req, res) => {
 
   if (urlObj.hostname == "youtu.be")
     videoID = urlObj.pathname.substring(1)
+  else if (urlObj.pathname.includes("shorts"))
+    videoID = urlObj.pathname.substring(1).split("/")[1] ?? ""
   else
     videoID = new URL(url).searchParams.get("v") ?? "";
 
@@ -90,9 +92,11 @@ app.post("/api/download", async (req, res) => {
   }
 
   const thumbHref = cheer("link[itemprop=\"thumbnailUrl\"]").attr("href")!;
+  const thumbPathname = new URL(thumbHref).pathname;
+  
   console.log("Thumbnail URL:", thumbHref);
 
-  const match = thumbHref.match(/\.(jpg|png)$/);
+  const match = thumbPathname.match(/\.(jpg|png)$/);
   const ext = match?.[1] ?? "";
   const outFilename = `${videoID}.${ext}`;
 
