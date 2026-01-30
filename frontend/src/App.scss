@@ -125,24 +125,25 @@ input {
       height: 100%;
 
       & > img {
+        pointer-events: none;
         width: 100%;
+        transition: 0.2s transform;
       }
 
       &:hover {
         & > img {
-          pointer-events: none;
           transform: scale(1.2)
         }
 
         & > .metadata {
-          
-          pointer-events: none;
           transform: scale(1.2);
           opacity: 1.0;
         }
       } 
 
       & > .metadata {
+        pointer-events: none;
+        
         position: absolute;
         width: 100%;
         height: 100%;
