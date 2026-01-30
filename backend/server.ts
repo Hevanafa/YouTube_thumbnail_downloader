@@ -22,8 +22,11 @@ app.listen(Port, () => {
 app.use("/thumbs", express.static("thumbs"));
 
 app.get("/api/thumbnails", async (req, res) => {
-  const files = await readdir("./thumbs");
-  res.json({ files })
+  // const files = await readdir("./thumbs");
+  // res.json({ files })
+
+  const thumbnails = db.query("SELECT * FROM thumbnails").all();
+  res.json({ thumbnails })
 });
 
 async function downloadAndSave(thumbHref: string, outFilename: string): Promise<[boolean, string]> {
