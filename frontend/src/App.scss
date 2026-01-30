@@ -11,13 +11,21 @@
       width: 100%;
     }
 
+    &:hover > .metadata {
+      opacity: 1.0;
+    }
+
     & > .metadata {
       position: absolute;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
-      background: rgba($color: #6495ED, $alpha: 0.25);
+      background: rgba($color: black, $alpha: 0.5);
+      color: white;
+      
+      transition: 0.25s opacity;
+      opacity: 0.0;
 
       & > div {
         position: absolute;
