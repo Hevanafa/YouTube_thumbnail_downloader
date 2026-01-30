@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import * as cheerio from "cheerio";
 
 const app = express();
 const Port = 8001;
@@ -30,7 +31,11 @@ app.post("/api/download", async (req, res) => {
     throw new Error("Invalid YouTube URL!");
 
   const response = await fetch(url);
+  const html = await response.text();
+  const cheer = cheerio.load(html);
 
+  const title = cheer("title").text();
+  console.log("Title:", title);
 
   res.json({ success: true, url })
 });
