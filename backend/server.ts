@@ -51,10 +51,17 @@ app.post("/api/download", async (req, res) => {
   // Download the thumbnail
   if (!existsSync("./thumbs")) mkdir("thumbs", () => {});
 
+  const youtubeHash = new URL(url).searchParams.get("v") ?? "";
+
+  if (youtubeHash == "") {
+    res.status(400);
+    res.json({ success: false, message: "Missing video hash!" });
+    return
+  }
+
   const thumbHref = cheer("link[itemprop=\"thumbnailUrl\"]").attr("href")!;
   console.log("Thumbnail URL:", thumbHref);
 
-  const youtubeHash = new URL(url).searchParams.get("v") ?? "";
   const match = thumbHref.match(/\.(jpg|png)$/);
   const ext = match?.[1] ?? "";
 
