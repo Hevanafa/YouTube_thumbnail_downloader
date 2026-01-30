@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import * as cheerio from "cheerio";
 import { existsSync, mkdir } from "node:fs";
-import { URLSearchParams } from "node:url";
 
 const app = express();
 const Port = 8001;
@@ -17,6 +16,22 @@ app.get("/", (req, res) => {
 app.listen(Port, () => {
   console.log("Server running on localhost:" + Port);
 });
+
+async function downloadAndSave(thumbHref: string, outFilename: string): Promise<[boolean, string]> {
+  const outFilepath = "thumbs/" + outFilename;
+
+  try {
+    const thumbResponse = await fetch(thumbHref);
+    const arrayBuffer = await thumbResponse.arrayBuffer();
+
+    await Bun.write(outFilepath, arrayBuffer);
+  } catch (error) {
+    if (error instanceof Error)
+      return [false, error.message];
+  }
+
+  return [true, outFilepath]
+}
 
 app.post("/api/download", async (req, res) => {
   const { url } = <{ url: string }> req.body;
@@ -43,10 +58,7 @@ app.post("/api/download", async (req, res) => {
   const response = await fetch(url);
   const html = await response.text();
   const cheer = cheerio.load(html);
-
-  // Obtain the title
   const title = cheer("title").text();
-  console.log("Title:", title);
 
   // Download the thumbnail
   if (!existsSync("./thumbs")) mkdir("thumbs", () => {});
@@ -65,12 +77,11 @@ app.post("/api/download", async (req, res) => {
   const match = thumbHref.match(/\.(jpg|png)$/);
   const ext = match?.[1] ?? "";
 
-  const outFilename = `${youtubeHash}.${ext}`;
-  const outFilepath = "thumbs/" + outFilename;
-  
-  const thumbResponse = await fetch(thumbHref);
-  const arrayBuffer = await thumbResponse.arrayBuffer();
-  await Bun.write(outFilepath, arrayBuffer);
-
-  res.json({ success: true, url, title, message: "Saved as " + outFilepath })
+  const downloadResponse = await downloadAndSave(thumbHref, `${youtubeHash}.${ext}`);
+  if (downloadResponse[0] == true)
+    res.json({ success: true, url, title, message: "Saved as " + downloadResponse[1] })
+  else {
+    res.status(409);
+    res.json({ success: false, message: downloadResponse[1] })
+  }
 });
