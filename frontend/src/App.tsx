@@ -6,6 +6,12 @@ function getRestUrl(path: string) {
   return "http://localhost:8001/" + path
 }
 
+type TThumbnail = {
+  id: number,
+  title: string,
+  filename: string
+};
+
 function App() {
   const [urlInput, setUrlInput] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
@@ -18,15 +24,17 @@ function App() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [thumbnails, setThumbnails] = useState<Array<string>>([]);
+  const [thumbnails, setThumbnails] = useState<Array<TThumbnail>>([]);
 
   useEffect(() => {
     (async function() {
       try {
         const response = await axios.get(getRestUrl("api/thumbnails"));
-        const files = response.data.files;
+        // const files = response.data.files;
+        // setThumbnails(files);
 
-        setThumbnails(files);
+        // console.log(response.data);
+        setThumbnails(response.data.thumbnails)
       } catch (error) {
         if (isAxiosError(error)) {
           setShowLastSuccess(true);
@@ -97,16 +105,16 @@ function App() {
       </div>
 
       <div className="thumbnail-gallery">
-        { thumbnails.map(filename => {
-          const trimmed = filename.replace(/\.(jpg|png)$/, "");
+        { thumbnails.map((item: TThumbnail) => {
+          const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
           const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
 
           return <div key={"gi" + trimmed} className="gallery-item">
-            <img src={getRestUrl("thumbs/" + filename)} />
+            <img src={getRestUrl("thumbs/" + item.filename)} />
 
             <a className="metadata" target="_blank" href={youtubeUrl}>
               <div>
-              { filename }
+              { item.title }
               </div>
             </a>
           </div>
