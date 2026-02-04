@@ -225,3 +225,40 @@ button {
     }
   }  
 }
+
+.thumbnail-gallery.list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+
+  & > .gallery-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: unset;
+
+    overflow: unset;
+    height: unset;
+    gap: 1rem;
+
+    & > .thumbnail {
+      position: relative;
+      width: percentage(calc(5 / 12));
+      border-radius: 10px;
+      overflow: hidden;
+
+      & > img {
+        width: 100%
+      }
+    }
+
+    & > .metadata {
+      width: percentage(calc(7 / 12));
+      position: relative;
+      transition: unset;
+      opacity: 1.0;
+
+      font-size: 1.2rem;
+    }
+
+  }
+}
