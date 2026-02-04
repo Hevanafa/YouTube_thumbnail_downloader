@@ -125,12 +125,12 @@ function App() {
         }
       </div>
 
-      <div className="thumbnail-gallery">
+      <div className="thumbnail-gallery compact-v2">
         { thumbnails.map((item: TThumbnail) => {
           const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
           const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
 
-          return <div key={"gi" + trimmed} className="gallery-item experimental-hover">
+          return <div key={"gi" + trimmed} className="gallery-item">
             <a className="hover-trigger" target="_blank" href={youtubeUrl}>
               <img src={getRestUrl("thumbs/" + item.filename)} />
 

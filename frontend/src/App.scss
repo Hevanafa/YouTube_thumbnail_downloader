@@ -150,8 +150,10 @@ button {
       }
     }
   }
+}
 
-  & > .gallery-item.experimental-hover {
+.thumbnail-gallery.compact-v2 {
+  & > .gallery-item {
     overflow: visible;
     z-index: 0;
 
@@ -214,5 +216,5 @@ button {
         }
       }
     }
-  }
+  }  
 }
