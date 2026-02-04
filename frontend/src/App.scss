@@ -22,14 +22,6 @@ h1 {
   margin: 0 1rem;
 }
 
-input {
-  color: white
-}
-
-input:focus {
-  outline: 1px solid #FFAA00;
-}
-
 .wrapper {
   background: #111;
   max-width: 800px;
@@ -41,6 +33,14 @@ input:focus {
   right: 0;
   margin: 0 auto;
   padding-bottom: 100px;
+}
+
+input {
+  color: white
+}
+
+input:focus {
+  outline: 1px solid #FFAA00;
 }
 
 .input-area {
@@ -56,6 +56,19 @@ input:focus {
 
     box-sizing: border-box;
     padding: 1rem;
+  }
+
+  & > .clear-url {
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    color: white;
+    font-size: 2rem;
+
+    cursor: pointer;
   }
 }
 

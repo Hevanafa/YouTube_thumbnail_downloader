@@ -107,6 +107,12 @@ function App() {
               }
             }
           }} />
+
+
+        { urlInput.length > 0
+          ? <button className="clear-url" onClick={() => setUrlInput("")}>X</button>
+          : null
+        }
       </div>
 
       <div className="status-message">
