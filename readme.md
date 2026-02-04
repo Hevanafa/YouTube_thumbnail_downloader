@@ -1,6 +1,6 @@
 #
 
-![preview](./preview.png)
+![preview](./preview_feb_2026.png)
 
 A project to download thumbnails from YouTube.  I made this for 'research purposes'
 
