@@ -21,6 +21,8 @@ Since the frontend & backend are separated, using `bun i` in both folders after 
 
 ## Running
 
+**1 Feb update:** Use `start.ps1` to start both the frontend & backend layers at the same time
+
 Frontend layer: `bun run start`
 
 Backend layer: `bun .\server.ts`
