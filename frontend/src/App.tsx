@@ -12,10 +12,13 @@ type TThumbnail = {
   filename: string
 };
 
-enum TThemes {
-  Compact,
-  CompactV2
-}
+// Verbose enum syntax but doesn't have TypeScript warnings
+const TThemes = {
+  Compact: 1,
+  CompactV2: 2
+};
+
+type TThemes = typeof TThemes[keyof typeof TThemes];
 
 function joinClassList(...cssClasses: Array<string>) {
   return cssClasses.filter(s => !!s).join(" ")
