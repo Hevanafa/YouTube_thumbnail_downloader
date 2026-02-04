@@ -65,6 +65,13 @@ button {
   justify-content: space-between;
 }
 
+.theme-selector {
+  & > .active {
+    background: #FFAA00;
+    color: black
+  }
+}
+
 .input-area {
   margin: 0.75rem 0;
   
