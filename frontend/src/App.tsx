@@ -13,13 +13,13 @@ type TThumbnail = {
 };
 
 // Verbose enum syntax but doesn't have TypeScript warnings
-const TThemes = {
+const TViews = {
   Compact: 1,
   CompactV2: 2,
   List: 3
 };
 
-type TThemes = typeof TThemes[keyof typeof TThemes];
+type TViews = typeof TViews[keyof typeof TViews];
 
 function joinClassList(...cssClasses: Array<string>) {
   return cssClasses.filter(s => !!s).join(" ")
@@ -28,7 +28,7 @@ function joinClassList(...cssClasses: Array<string>) {
 function App() {
   const [urlInput, setUrlInput] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
-  const [actualTheme, setTheme] = useState(TThemes.List);
+  const [actualViewMode, setViewMode] = useState(TViews.List);
 
   const [showLastSuccess, setShowLastSuccess] = useState(false);
   /**
@@ -76,15 +76,21 @@ function App() {
 
         <div className="theme-selector">
           <button
-            className={actualTheme == TThemes.Compact ? "active" : ""}
-            onClick={() => setTheme(TThemes.Compact)}>
+            className={actualViewMode == TViews.Compact ? "active" : ""}
+            onClick={() => setViewMode(TViews.Compact)}>
             Compact
           </button>
 
           <button
-            className={actualTheme == TThemes.CompactV2 ? "active" : ""}
-            onClick={() => setTheme(TThemes.CompactV2)}>
+            className={actualViewMode == TViews.CompactV2 ? "active" : ""}
+            onClick={() => setViewMode(TViews.CompactV2)}>
             Compact v2
+          </button>
+
+          <button
+            className={actualViewMode == TViews.List ? "active" : ""}
+            onClick={() => setViewMode(TViews.List)}>
+            List
           </button>
         </div>
       </div>
@@ -156,11 +162,11 @@ function App() {
 
       <div className={joinClassList(
         "thumbnail-gallery",
-        actualTheme == TThemes.CompactV2 ? "compact-v2" : "",
-        actualTheme == TThemes.List ? "list" : ""
+        actualViewMode == TViews.CompactV2 ? "compact-v2" : "",
+        actualViewMode == TViews.List ? "list" : ""
       )}>
         {
-          actualTheme == TThemes.CompactV2
+          actualViewMode == TViews.CompactV2
           ? thumbnails.map((item: TThumbnail) => {
             const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
             const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
@@ -180,7 +186,7 @@ function App() {
         }
 
         {
-          actualTheme == TThemes.Compact
+          actualViewMode == TViews.Compact
           ? thumbnails.map((item: TThumbnail) => {
             const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
             const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
@@ -198,7 +204,7 @@ function App() {
         }
 
         {
-          actualTheme == TThemes.List
+          actualViewMode == TViews.List
           ? thumbnails.map((item: TThumbnail) => {
             const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
             const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
