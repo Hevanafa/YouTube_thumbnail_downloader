@@ -51,7 +51,7 @@ function App() {
 
       <div className="subtitle">By Hevanafa (Jan 2026)</div>
 
-      <div>
+      <div className="toolbox">
         <button onClick={async () => {
           const response = await axios.post(getRestUrl("api/open-thumbs"), {});
 

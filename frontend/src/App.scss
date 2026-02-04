@@ -43,6 +43,28 @@ input:focus {
   outline: 1px solid #FFAA00;
 }
 
+button {
+  cursor: pointer;
+
+  background: transparent;
+  border: none;
+  color: white;
+
+  margin: 0.5rem;
+  padding: 1rem;
+
+  border-radius: 1rem;
+
+  &:hover {
+    box-shadow: 0 0 10px #FFAA00
+  }
+}
+
+.toolbox {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .input-area {
   margin: 0.75rem 0;
   
@@ -59,16 +81,12 @@ input:focus {
   }
 
   & > .clear-url {
-    background: transparent;
-    border: none;
     position: absolute;
     right: 1rem;
     width: 3rem;
     height: 3rem;
     color: white;
     font-size: 2rem;
-
-    cursor: pointer;
   }
 }
 
