@@ -155,7 +155,7 @@ function App() {
 
         {
           showLastSuccess
-          ? (lastSuccess ? <div>{ successMessage }</div> : <div>Unsuccessful: { errorMessage }</div>)
+          ? (lastSuccess ? <div className="success">{ successMessage }</div> : <div className="failure">Unsuccessful: { errorMessage }</div>)
           : null
         }
       </div>
