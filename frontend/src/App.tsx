@@ -145,34 +145,43 @@ function App() {
         "thumbnail-gallery",
         actualTheme == TThemes.CompactV2 ? "compact-v2" : ""
       )}>
-        { thumbnails.map((item: TThumbnail) => {
-          const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
-          const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
+        {
+          actualTheme == TThemes.CompactV2
+          ? thumbnails.map((item: TThumbnail) => {
+            const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
+            const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
 
-          return <div key={"gi" + trimmed} className="gallery-item">
-            <a className="hover-trigger" target="_blank" href={youtubeUrl}>
+            return <div key={"gi" + trimmed} className="gallery-item">
+              <a className="hover-trigger" target="_blank" href={youtubeUrl}>
+                <img src={getRestUrl("thumbs/" + item.filename)} />
+
+                <div className="metadata">
+                  <div>
+                  { item.title }
+                  </div>
+                </div>
+              </a>
+            </div>;
+          }) : null
+        }
+
+        {
+          actualTheme == TThemes.Compact
+          ? thumbnails.map((item: TThumbnail) => {
+            const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
+            const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
+            
+            return <div key={"gi" + trimmed} className="gallery-item">
               <img src={getRestUrl("thumbs/" + item.filename)} />
 
-              <div className="metadata">
+              <a className="metadata" target="_blank" href={youtubeUrl}>
                 <div>
                 { item.title }
                 </div>
-              </div>
-            </a>
-          </div>
-
-          /**
-          return <div key={"gi" + trimmed} className="gallery-item">
-            <img src={getRestUrl("thumbs/" + item.filename)} />
-
-            <a className="metadata" target="_blank" href={youtubeUrl}>
-              <div>
-              { item.title }
-              </div>
-            </a>
-          </div>
-          */
-        })}
+              </a>
+            </div>
+          }) : null
+        }
       </div>
     </div>
   )
