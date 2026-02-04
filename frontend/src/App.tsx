@@ -12,9 +12,19 @@ type TThumbnail = {
   filename: string
 };
 
+enum TThemes {
+  Compact,
+  CompactV2
+}
+
+function joinClassList(...cssClasses: Array<string>) {
+  return cssClasses.filter(s => !!s).join(" ")
+}
+
 function App() {
   const [urlInput, setUrlInput] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [actualTheme, setTheme] = useState(TThemes.CompactV2);
 
   const [showLastSuccess, setShowLastSuccess] = useState(false);
   /**
@@ -52,11 +62,18 @@ function App() {
       <div className="subtitle">By Hevanafa (Jan 2026)</div>
 
       <div className="toolbox">
-        <button onClick={async () => {
-          const response = await axios.post(getRestUrl("api/open-thumbs"), {});
+        <div>
+          <button onClick={() => setTheme(TThemes.Compact)}>Compact</button>
+          <button onClick={() => setTheme(TThemes.CompactV2)}>Compact v2</button>
+        </div>
 
-          if (response.data.success) return;
-        }}>Open downloads folder</button>
+        <div>
+          <button onClick={async () => {
+            const response = await axios.post(getRestUrl("api/open-thumbs"), {});
+
+            if (response.data.success) return;
+          }}>Open downloads folder</button>
+        </div>
       </div>
 
       <div className="input-area">
@@ -108,7 +125,6 @@ function App() {
             }
           }} />
 
-
         { urlInput.length > 0
           ? <button className="clear-url" onClick={() => setUrlInput("")}>X</button>
           : null
@@ -125,7 +141,10 @@ function App() {
         }
       </div>
 
-      <div className="thumbnail-gallery compact-v2">
+      <div className={joinClassList(
+        "thumbnail-gallery",
+        actualTheme == TThemes.CompactV2 ? "compact-v2" : ""
+      )}>
         { thumbnails.map((item: TThumbnail) => {
           const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
           const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
