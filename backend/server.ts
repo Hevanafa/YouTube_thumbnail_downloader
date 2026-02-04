@@ -4,6 +4,7 @@ import * as cheerio from "cheerio";
 import { existsSync, mkdir } from "node:fs";
 // import { readdir } from "node:fs/promises";
 import * as db from "./db";
+import { resolve } from "node:path";
 
 const app = express();
 const Port = 8001;
@@ -143,5 +144,15 @@ app.post("/api/download", async (req, res) => {
     res.json({ success: false, message: downloadResponse[1] })
   }
 });
+
+app.post("/api/open-thumbs", async (req, resp) => {
+  const thumbsPath = resolve("./thumbs");
+  Bun.spawn(["explorer", thumbsPath]);
+
+  resp.json({ success: true })
+});
+
+
+// Entry point
 
 db.initDatabase();

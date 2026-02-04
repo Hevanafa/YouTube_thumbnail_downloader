@@ -51,6 +51,14 @@ function App() {
 
       <div className="subtitle">By Hevanafa (Jan 2026)</div>
 
+      <div>
+        <button onClick={async () => {
+          const response = await axios.post(getRestUrl("api/open-thumbs"), {});
+
+          if (response.data.success) return;
+        }}>Open downloads folder</button>
+      </div>
+
       <div className="input-area">
         <input
           type="text"
