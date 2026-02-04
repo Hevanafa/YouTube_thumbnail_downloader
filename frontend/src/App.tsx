@@ -63,16 +63,25 @@ function App() {
 
       <div className="toolbox">
         <div>
-          <button onClick={() => setTheme(TThemes.Compact)}>Compact</button>
-          <button onClick={() => setTheme(TThemes.CompactV2)}>Compact v2</button>
-        </div>
-
-        <div>
           <button onClick={async () => {
             const response = await axios.post(getRestUrl("api/open-thumbs"), {});
 
             if (response.data.success) return;
           }}>Open downloads folder</button>
+        </div>
+
+        <div className="theme-selector">
+          <button
+            className={actualTheme == TThemes.Compact ? "active" : ""}
+            onClick={() => setTheme(TThemes.Compact)}>
+            Compact
+          </button>
+
+          <button
+            className={actualTheme == TThemes.CompactV2 ? "active" : ""}
+            onClick={() => setTheme(TThemes.CompactV2)}>
+            Compact v2
+          </button>
         </div>
       </div>
 
@@ -170,7 +179,7 @@ function App() {
           ? thumbnails.map((item: TThumbnail) => {
             const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
             const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
-            
+
             return <div key={"gi" + trimmed} className="gallery-item">
               <img src={getRestUrl("thumbs/" + item.filename)} />
 
