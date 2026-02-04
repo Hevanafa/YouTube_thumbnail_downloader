@@ -26,6 +26,10 @@ input {
   color: white
 }
 
+input:focus {
+  outline: 1px solid #FFAA00;
+}
+
 .wrapper {
   background: #111;
   max-width: 800px;
