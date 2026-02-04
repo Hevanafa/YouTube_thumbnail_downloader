@@ -15,7 +15,8 @@ type TThumbnail = {
 // Verbose enum syntax but doesn't have TypeScript warnings
 const TThemes = {
   Compact: 1,
-  CompactV2: 2
+  CompactV2: 2,
+  List: 3
 };
 
 type TThemes = typeof TThemes[keyof typeof TThemes];
@@ -27,7 +28,7 @@ function joinClassList(...cssClasses: Array<string>) {
 function App() {
   const [urlInput, setUrlInput] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
-  const [actualTheme, setTheme] = useState(TThemes.CompactV2);
+  const [actualTheme, setTheme] = useState(TThemes.List);
 
   const [showLastSuccess, setShowLastSuccess] = useState(false);
   /**
@@ -155,7 +156,8 @@ function App() {
 
       <div className={joinClassList(
         "thumbnail-gallery",
-        actualTheme == TThemes.CompactV2 ? "compact-v2" : ""
+        actualTheme == TThemes.CompactV2 ? "compact-v2" : "",
+        actualTheme == TThemes.List ? "list" : ""
       )}>
         {
           actualTheme == TThemes.CompactV2
@@ -192,6 +194,24 @@ function App() {
                 </div>
               </a>
             </div>
+          }) : null
+        }
+
+        {
+          actualTheme == TThemes.List
+          ? thumbnails.map((item: TThumbnail) => {
+            const trimmed = item.filename.replace(/\.(jpg|png)$/, "");
+            const youtubeUrl = "https://www.youtube.com/watch?v=" + trimmed;
+
+            return <div key={"gi" + trimmed} className="gallery-item">
+              <a className="thumbnail" target="_blank" href={youtubeUrl}>
+                <img src={getRestUrl("thumbs/" + item.filename)} />
+              </a>
+
+              <a className="metadata" target="_blank" href={youtubeUrl}>
+                { item.title }
+              </a>
+            </div>;
           }) : null
         }
       </div>
