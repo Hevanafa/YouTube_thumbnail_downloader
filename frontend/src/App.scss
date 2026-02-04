@@ -95,7 +95,9 @@ button {
     height: 3rem;
     color: white;
     font-size: 2rem;
-    padding: 0
+    padding: 0;
+
+    &:hover { box-shadow: none }
   }
 }
 
