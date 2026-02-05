@@ -1,3 +1,5 @@
+@use "sass:math";
+
 :root {
   background: #213;
   color: white;
@@ -254,7 +256,7 @@ button {
 
     & > .thumbnail {
       position: relative;
-      width: percentage(calc(5 / 12));
+      width: math.percentage(calc(5 / 12));
       border-radius: 10px;
       overflow: hidden;
 
@@ -264,7 +266,7 @@ button {
     }
 
     & > .metadata {
-      width: percentage(calc(7 / 12));
+      width: math.percentage(calc(7 / 12));
       position: relative;
       transition: unset;
       opacity: 1.0;
